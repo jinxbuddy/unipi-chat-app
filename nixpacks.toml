@@ -1,0 +1,11 @@
+# Railway Nixpacks configuration for UniPi Chat Backend
+
+[build]
+cmd = "cd server && npm install"
+
+[start]
+cmd = "cd server && npm start"
+
+[variables]
+NODE_ENV = "production"
+PORT = "3001"
