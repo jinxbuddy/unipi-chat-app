@@ -1,8 +1,0 @@
-[phases.build]
-cmds = ["cd server", "npm install"]
-
-[phases.start]
-cmd = "cd server && node index.js"
-
-[variables]
-NODE_ENV = "production"

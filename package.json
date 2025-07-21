@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "cd server && npm install && node index.js",
     "lint": "next lint",
     "server": "node server/index.js",
     "start:server": "cd server && npm start",
