@@ -11,12 +11,27 @@ const server = http.createServer(app);
 
 // CORS configuration
 const corsOptions = {
-  origin: [
-    "http://localhost:3000",
-    "https://unipi-chat-nt1obgw00-jinxbuddys-projects.vercel.app",
-    process.env.CLIENT_URL,
-    process.env.FRONTEND_URL
-  ].filter(Boolean), // Remove any undefined values
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps, curl, postman)
+    if (!origin) return callback(null, true);
+    
+    // Allow localhost for development
+    if (origin.includes('localhost')) return callback(null, true);
+    
+    // Allow all Vercel deployments
+    if (origin.includes('.vercel.app')) return callback(null, true);
+    
+    // Allow our specific domains
+    const allowedOrigins = [
+      "https://unipi-chat-nt1obgw00-jinxbuddys-projects.vercel.app",
+      process.env.CLIENT_URL,
+      process.env.FRONTEND_URL
+    ].filter(Boolean);
+    
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    
+    callback(new Error('Not allowed by CORS'));
+  },
   methods: ["GET", "POST", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization", "Accept"],
   credentials: true,
@@ -42,10 +57,15 @@ app.use(cors(corsOptions));
 
 // Manual CORS headers as fallback
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', req.headers.origin);
-  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Accept');
-  res.header('Access-Control-Allow-Credentials', 'true');
+  const origin = req.headers.origin;
+  
+  // Allow all Vercel deployments and localhost
+  if (!origin || origin.includes('localhost') || origin.includes('.vercel.app')) {
+    res.header('Access-Control-Allow-Origin', origin || '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Accept');
+    res.header('Access-Control-Allow-Credentials', 'true');
+  }
   
   if (req.method === 'OPTIONS') {
     res.sendStatus(200);
