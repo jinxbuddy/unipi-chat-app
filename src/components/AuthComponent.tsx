@@ -36,6 +36,7 @@ export default function AuthComponent({ onAuthSuccess }: AuthComponentProps) {
       console.log('Backend URL:', backendUrl) // Debug log
       const apiUrl = `${backendUrl}/api/auth/send-verification`
       console.log('Full API URL:', apiUrl) // Debug log
+      console.log('Sending request with email:', email) // Debug log
       
       const response = await fetch(apiUrl, {
         method: 'POST',
@@ -44,16 +45,24 @@ export default function AuthComponent({ onAuthSuccess }: AuthComponentProps) {
           'Accept': 'application/json'
         },
         mode: 'cors',
+        credentials: 'omit', // Try without credentials first
         body: JSON.stringify({ email })
       })
 
+      console.log('Response status:', response.status) // Debug log
+      console.log('Response headers:', response.headers) // Debug log
+
       if (response.ok) {
+        const data = await response.json()
+        console.log('Success response:', data) // Debug log
         setStep('verification')
       } else {
-        const data = await response.json()
+        const data = await response.json().catch(() => ({ message: 'Unknown error' }))
+        console.log('Error response:', data) // Debug log
         setError(data.message || 'Failed to send verification email')
       }
     } catch (error) {
+      console.error('Network error details:', error) // Debug log
       setError('Network error. Please try again.')
     } finally {
       setIsLoading(false)
@@ -83,11 +92,15 @@ export default function AuthComponent({ onAuthSuccess }: AuthComponentProps) {
           'Accept': 'application/json'
         },
         mode: 'cors',
+        credentials: 'omit', // Try without credentials first
         body: JSON.stringify({ email, code: verificationCode })
       })
 
+      console.log('Verification response status:', response.status) // Debug log
+
       if (response.ok) {
         const userData = await response.json()
+        console.log('Verification success:', userData) // Debug log
         
         // Create user object
         const user: User = {
@@ -100,11 +113,17 @@ export default function AuthComponent({ onAuthSuccess }: AuthComponentProps) {
 
         onAuthSuccess(user)
       } else {
-        const data = await response.json()
+        const data = await response.json().catch(() => ({ message: 'Unknown error' }))
+        console.log('Verification error:', data) // Debug log
         setError(data.message || 'Invalid verification code')
       }
     } catch (error) {
-      // For demo purposes, simulate successful verification
+      console.error('Verification network error:', error) // Debug log
+      setError('Network error. Please try again.')
+      
+      // For demo purposes, simulate successful verification if needed
+      // Uncomment the following lines if you want to skip verification for testing:
+      /*
       console.warn('Simulating successful verification for demo')
       const user: User = {
         id: Math.random().toString(36).substr(2, 9),
@@ -114,6 +133,7 @@ export default function AuthComponent({ onAuthSuccess }: AuthComponentProps) {
         createdAt: new Date()
       }
       onAuthSuccess(user)
+      */
     } finally {
       setIsLoading(false)
     }
