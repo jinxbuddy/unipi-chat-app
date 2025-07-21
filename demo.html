@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniPi Chat - Demo Version</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .loading-dots span {
+            animation: dots 1.4s infinite;
+        }
+        .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+        
+        @keyframes dots {
+            0%, 20% { opacity: 0; }
+            50% { opacity: 1; }
+            80%, 100% { opacity: 0; }
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-bold text-gray-800 mb-2">
+                    UniPi Chat 🎓
+                </h1>
+                <p class="text-gray-600 text-lg">
+                    Private video chat for University of Pisa students
+                </p>
+                <div class="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                    <p class="text-sm text-blue-700">
+                        🔒 <strong>Demo Version</strong> - Shows the UI without backend functionality
+                    </p>
+                </div>
+            </div>
+
+            <!-- Demo Notice -->
+            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+                <h3 class="font-semibold text-yellow-800 mb-2">📋 Demo Information</h3>
+                <p class="text-sm text-yellow-700 mb-2">
+                    This is a static demo of the UniPi Chat interface. To run the full application with real functionality:
+                </p>
+                <ol class="text-sm text-yellow-700 list-decimal list-inside space-y-1">
+                    <li>Install Node.js from <a href="https://nodejs.org/" class="underline" target="_blank">nodejs.org</a></li>
+                    <li>Run <code class="bg-yellow-100 px-1 rounded">npm install</code> in the project directory</li>
+                    <li>Start the development server with <code class="bg-yellow-100 px-1 rounded">npm run dev:full</code></li>
+                </ol>
+            </div>
+
+            <!-- Main Content -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Demo Auth Component -->
+                <div class="lg:col-span-2">
+                    <div class="max-w-md mx-auto">
+                        <div class="bg-white rounded-lg shadow-lg p-6">
+                            <div class="text-center mb-6">
+                                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <span class="text-2xl">🔐</span>
+                                </div>
+                                <h2 class="text-2xl font-bold text-gray-800">
+                                    Verify Your UniPi Email
+                                </h2>
+                                <p class="text-gray-600 mt-2">
+                                    Only verified University of Pisa students can access this chat
+                                </p>
+                            </div>
+
+                            <form class="space-y-4" onsubmit="demoAuth(event)">
+                                <div>
+                                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">
+                                        University Email
+                                    </label>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        placeholder="your.name@studenti.unipi.it"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        required
+                                    />
+                                </div>
+
+                                <button
+                                    type="submit"
+                                    class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+                                >
+                                    Send Verification Code (Demo)
+                                </button>
+                            </form>
+
+                            <div class="mt-6 pt-4 border-t border-gray-200">
+                                <p class="text-xs text-gray-500 text-center">
+                                    By proceeding, you agree to our privacy policy and terms of service.
+                                    All chats are anonymous and ephemeral.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Demo Features Panel -->
+                <div class="space-y-6">
+                    <!-- Features List -->
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">🎯 Features</h3>
+                        <ul class="space-y-3 text-sm text-gray-600">
+                            <li class="flex items-center">
+                                <span class="text-green-500 mr-2">✅</span>
+                                Email verification (@studenti.unipi.it only)
+                            </li>
+                            <li class="flex items-center">
+                                <span class="text-green-500 mr-2">✅</span>
+                                Anonymous video/audio chat
+                            </li>
+                            <li class="flex items-center">
+                                <span class="text-green-500 mr-2">✅</span>
+                                Real-time matchmaking
+                            </li>
+                            <li class="flex items-center">
+                                <span class="text-green-500 mr-2">✅</span>
+                                Privacy-focused design
+                            </li>
+                            <li class="flex items-center">
+                                <span class="text-green-500 mr-2">✅</span>
+                                WebRTC encryption
+                            </li>
+                            <li class="flex items-center">
+                                <span class="text-green-500 mr-2">✅</span>
+                                Report & safety features
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Tech Stack -->
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">🛠️ Tech Stack</h3>
+                        <div class="space-y-2 text-sm text-gray-600">
+                            <div><strong>Frontend:</strong> React, Next.js, TypeScript</div>
+                            <div><strong>Styling:</strong> Tailwind CSS</div>
+                            <div><strong>Backend:</strong> Node.js, Express, Socket.IO</div>
+                            <div><strong>Real-time:</strong> WebRTC, WebSockets</div>
+                            <div><strong>Security:</strong> Rate limiting, CORS, Helmet</div>
+                        </div>
+                    </div>
+
+                    <!-- Safety Tips -->
+                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                        <h4 class="font-semibold text-yellow-800 mb-2">Safety Tips 🛡️</h4>
+                        <ul class="text-sm text-yellow-700 space-y-1">
+                            <li>• Never share personal information</li>
+                            <li>• Report inappropriate behavior</li>
+                            <li>• Your identity remains anonymous</li>
+                            <li>• Chats are not recorded</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="mt-12 text-center text-sm text-gray-500">
+                <p>
+                    Made with ❤️ for University of Pisa students | 
+                    <span class="ml-2">Privacy-first • GDPR compliant</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function demoAuth(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            
+            if (!email.endsWith('@studenti.unipi.it')) {
+                alert('Please use a @studenti.unipi.it email address');
+                return;
+            }
+            
+            alert('Demo: In the full version, a verification code would be sent to ' + email + '\n\nTo run the complete application:\n1. Install Node.js\n2. Run: npm install\n3. Run: npm run dev:full');
+        }
+        
+        // Demo loading animation
+        function showLoading() {
+            document.querySelector('button[type="submit"]').innerHTML = `
+                <span class="flex items-center justify-center">
+                    <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Demo Mode
+                </span>
+            `;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,2 @@
+# Heroku Procfile for backend
+web: node index.js
