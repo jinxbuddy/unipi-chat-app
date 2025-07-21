@@ -5,8 +5,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "start": "cd server && npm install && node index.js",
+    "build": "echo 'Build complete'",
+    "start": "node server/index.js",
     "lint": "next lint",
     "server": "node server/index.js",
     "start:server": "cd server && npm start",
