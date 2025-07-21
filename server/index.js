@@ -11,10 +11,16 @@ const server = http.createServer(app);
 
 // CORS configuration
 const corsOptions = {
-  origin: process.env.CLIENT_URL || "http://localhost:3000",
-  methods: ["GET", "POST"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true
+  origin: [
+    "http://localhost:3000",
+    "https://unipi-chat-nt1obgw00-jinxbuddys-projects.vercel.app",
+    process.env.CLIENT_URL,
+    process.env.FRONTEND_URL
+  ].filter(Boolean), // Remove any undefined values
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "Accept"],
+  credentials: true,
+  optionsSuccessStatus: 200
 };
 
 // Socket.IO configuration
@@ -25,7 +31,29 @@ const io = socketIo(server, {
 
 // Middleware
 app.use(helmet());
+
+// Add CORS debug logging
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.path} - Origin: ${req.headers.origin}`);
+  next();
+});
+
 app.use(cors(corsOptions));
+
+// Manual CORS headers as fallback
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', req.headers.origin);
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Accept');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  
+  if (req.method === 'OPTIONS') {
+    res.sendStatus(200);
+  } else {
+    next();
+  }
+});
+
 app.use(express.json());
 
 // Health check endpoint

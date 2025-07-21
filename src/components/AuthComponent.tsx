@@ -33,9 +33,16 @@ export default function AuthComponent({ onAuthSuccess }: AuthComponentProps) {
     try {
       // Use environment variable for backend URL
       const backendUrl = process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:3001'
-      const response = await fetch(`${backendUrl}/api/auth/send-verification`, {
+      console.log('Backend URL:', backendUrl) // Debug log
+      const apiUrl = `${backendUrl}/api/auth/send-verification`
+      console.log('Full API URL:', apiUrl) // Debug log
+      
+      const response = await fetch(apiUrl, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
         body: JSON.stringify({ email })
       })
 
