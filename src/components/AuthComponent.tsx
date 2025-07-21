@@ -31,38 +31,36 @@ export default function AuthComponent({ onAuthSuccess }: AuthComponentProps) {
     setIsLoading(true)
 
     try {
-      // Hardcode backend URL for testing
       const backendUrl = 'https://unipi-chat-app-production.up.railway.app'
-      console.log('Backend URL:', backendUrl) // Debug log
       const apiUrl = `${backendUrl}/api/auth/send-verification`
-      console.log('Full API URL:', apiUrl) // Debug log
-      console.log('Sending request with email:', email) // Debug log
       
-      const response = await fetch(apiUrl, {
+      console.log('Sending request to:', apiUrl)
+      console.log('Email:', email)
+      
+      const requestOptions = {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
-        mode: 'cors',
-        credentials: 'omit', // Try without credentials first
+        mode: 'cors' as RequestMode,
         body: JSON.stringify({ email })
-      })
-
-      console.log('Response status:', response.status) // Debug log
-      console.log('Response headers:', response.headers) // Debug log
+      }
+      
+      const response = await fetch(apiUrl, requestOptions)
+      console.log('Response status:', response.status)
 
       if (response.ok) {
         const data = await response.json()
-        console.log('Success response:', data) // Debug log
+        console.log('Success:', data)
         setStep('verification')
       } else {
-        const data = await response.json().catch(() => ({ message: 'Unknown error' }))
-        console.log('Error response:', data) // Debug log
-        setError(data.message || 'Failed to send verification email')
+        const errorData = await response.json().catch(() => ({ message: 'Unknown error' }))
+        console.log('Error:', errorData)
+        setError(errorData.message || 'Failed to send verification email')
       }
     } catch (error) {
-      console.error('Network error details:', error) // Debug log
+      console.error('Request failed:', error)
       setError('Network error. Please try again.')
     } finally {
       setIsLoading(false)
