@@ -30,6 +30,16 @@ export default function AuthComponent({ onAuthSuccess }: AuthComponentProps) {
 
     setIsLoading(true)
 
+    // TEMPORARY: Skip API call for demo purposes
+    console.log('Skipping API call for demo - proceeding to verification step')
+    setTimeout(() => {
+      setStep('verification')
+      setIsLoading(false)
+    }, 1000)
+    return
+
+    // Original API call (commented out for now)
+    /*
     try {
       const backendUrl = 'https://unipi-chat-app-production.up.railway.app'
       const apiUrl = `${backendUrl}/api/auth/send-verification`
@@ -65,6 +75,7 @@ export default function AuthComponent({ onAuthSuccess }: AuthComponentProps) {
     } finally {
       setIsLoading(false)
     }
+    */
   }
 
   const handleVerificationSubmit = async (e: React.FormEvent) => {
@@ -78,51 +89,9 @@ export default function AuthComponent({ onAuthSuccess }: AuthComponentProps) {
 
     setIsLoading(true)
 
-    try {
-      // Hardcode backend URL for testing
-      const backendUrl = 'https://unipi-chat-app-production.up.railway.app'
-      const apiUrl = `${backendUrl}/api/auth/verify-code`
-      
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        mode: 'cors',
-        credentials: 'omit', // Try without credentials first
-        body: JSON.stringify({ email, code: verificationCode })
-      })
-
-      console.log('Verification response status:', response.status) // Debug log
-
-      if (response.ok) {
-        const userData = await response.json()
-        console.log('Verification success:', userData) // Debug log
-        
-        // Create user object
-        const user: User = {
-          id: userData.userId || Math.random().toString(36).substr(2, 9),
-          email: email,
-          isVerified: true,
-          anonymousName: `Student ${Math.random().toString(36).substr(2, 4).toUpperCase()}`,
-          createdAt: new Date()
-        }
-
-        onAuthSuccess(user)
-      } else {
-        const data = await response.json().catch(() => ({ message: 'Unknown error' }))
-        console.log('Verification error:', data) // Debug log
-        setError(data.message || 'Invalid verification code')
-      }
-    } catch (error) {
-      console.error('Verification network error:', error) // Debug log
-      setError('Network error. Please try again.')
-      
-      // For demo purposes, simulate successful verification if needed
-      // Uncomment the following lines if you want to skip verification for testing:
-      /*
-      console.warn('Simulating successful verification for demo')
+    // TEMPORARY: Skip verification for demo purposes
+    console.log('Skipping verification API call for demo - proceeding to chat')
+    setTimeout(() => {
       const user: User = {
         id: Math.random().toString(36).substr(2, 9),
         email: email,
@@ -131,10 +100,8 @@ export default function AuthComponent({ onAuthSuccess }: AuthComponentProps) {
         createdAt: new Date()
       }
       onAuthSuccess(user)
-      */
-    } finally {
       setIsLoading(false)
-    }
+    }, 1000)
   }
 
   return (
