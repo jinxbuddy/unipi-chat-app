@@ -9,32 +9,48 @@ const { body, validationResult } = require('express-validator');
 const app = express();
 const server = http.createServer(app);
 
-// CORS configuration
+// CORS configuration - Allow all Vercel deployments
 const corsOptions = {
   origin: function (origin, callback) {
+    console.log('CORS check for origin:', origin); // Debug log
+    
     // Allow requests with no origin (like mobile apps, curl, postman)
-    if (!origin) return callback(null, true);
+    if (!origin) {
+      console.log('No origin - allowing');
+      return callback(null, true);
+    }
     
     // Allow localhost for development
-    if (origin.includes('localhost')) return callback(null, true);
+    if (origin.includes('localhost')) {
+      console.log('Localhost origin - allowing');
+      return callback(null, true);
+    }
     
     // Allow all Vercel deployments
-    if (origin.includes('.vercel.app')) return callback(null, true);
+    if (origin.includes('.vercel.app')) {
+      console.log('Vercel deployment - allowing');
+      return callback(null, true);
+    }
     
     // Allow our specific domains
     const allowedOrigins = [
       "https://unipi-chat-nt1obgw00-jinxbuddys-projects.vercel.app",
+      "https://unipi-chat-5hfo0x47l-jinxbuddys-projects.vercel.app",
       process.env.CLIENT_URL,
       process.env.FRONTEND_URL
     ].filter(Boolean);
     
-    if (allowedOrigins.includes(origin)) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      console.log('Specific domain match - allowing');
+      return callback(null, true);
+    }
     
-    callback(new Error('Not allowed by CORS'));
+    console.log('Origin not allowed:', origin);
+    callback(null, true); // Allow all for now to debug
   },
   methods: ["GET", "POST", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization", "Accept"],
-  credentials: true,
+  credentials: false, // Disable credentials to simplify CORS
   optionsSuccessStatus: 200
 };
 
@@ -58,16 +74,16 @@ app.use(cors(corsOptions));
 // Manual CORS headers as fallback
 app.use((req, res, next) => {
   const origin = req.headers.origin;
+  console.log('Manual CORS for origin:', origin); // Debug log
   
-  // Allow all Vercel deployments and localhost
-  if (!origin || origin.includes('localhost') || origin.includes('.vercel.app')) {
-    res.header('Access-Control-Allow-Origin', origin || '*');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Accept');
-    res.header('Access-Control-Allow-Credentials', 'true');
-  }
+  // Always set permissive CORS headers for debugging
+  res.header('Access-Control-Allow-Origin', origin || '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Accept');
+  res.header('Access-Control-Allow-Credentials', 'false');
   
   if (req.method === 'OPTIONS') {
+    console.log('Handling OPTIONS preflight request');
     res.sendStatus(200);
   } else {
     next();
