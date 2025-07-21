@@ -31,8 +31,8 @@ export default function AuthComponent({ onAuthSuccess }: AuthComponentProps) {
     setIsLoading(true)
 
     try {
-      // Use environment variable for backend URL
-      const backendUrl = process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:3001'
+      // Hardcode backend URL for testing
+      const backendUrl = 'https://unipi-chat-app-production.up.railway.app'
       console.log('Backend URL:', backendUrl) // Debug log
       const apiUrl = `${backendUrl}/api/auth/send-verification`
       console.log('Full API URL:', apiUrl) // Debug log
@@ -43,6 +43,7 @@ export default function AuthComponent({ onAuthSuccess }: AuthComponentProps) {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
+        mode: 'cors',
         body: JSON.stringify({ email })
       })
 
@@ -71,11 +72,17 @@ export default function AuthComponent({ onAuthSuccess }: AuthComponentProps) {
     setIsLoading(true)
 
     try {
-      // Use environment variable for backend URL
-      const backendUrl = process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:3001'
-      const response = await fetch(`${backendUrl}/api/auth/verify-code`, {
+      // Hardcode backend URL for testing
+      const backendUrl = 'https://unipi-chat-app-production.up.railway.app'
+      const apiUrl = `${backendUrl}/api/auth/verify-code`
+      
+      const response = await fetch(apiUrl, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        mode: 'cors',
         body: JSON.stringify({ email, code: verificationCode })
       })
 
