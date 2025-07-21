@@ -31,8 +31,9 @@ export default function AuthComponent({ onAuthSuccess }: AuthComponentProps) {
     setIsLoading(true)
 
     try {
-      // Simulate email verification request
-      const response = await fetch('/api/auth/send-verification', {
+      // Use environment variable for backend URL
+      const backendUrl = process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:3001'
+      const response = await fetch(`${backendUrl}/api/auth/send-verification`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })
@@ -63,8 +64,9 @@ export default function AuthComponent({ onAuthSuccess }: AuthComponentProps) {
     setIsLoading(true)
 
     try {
-      // Simulate verification
-      const response = await fetch('/api/auth/verify-code', {
+      // Use environment variable for backend URL
+      const backendUrl = process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:3001'
+      const response = await fetch(`${backendUrl}/api/auth/verify-code`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, code: verificationCode })
