@@ -85,7 +85,7 @@ export default function VideoComponent({ localStream, remoteStream, chatState }:
                     </svg>
                   </div>
                   <h3 className="text-xl font-semibold mb-2">Ready to Chat</h3>
-                  <p className="text-gray-300">Click "Start Chat" to connect with a fellow UniPi student</p>
+                  <p className="text-gray-300">Click &quot;Start Chat&quot; to connect with a fellow UniPi student</p>
                 </>
               )}
 

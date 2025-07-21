@@ -46,7 +46,7 @@ export default function QueueComponent({ queueStatus, onCancel }: QueueComponent
 
         <div className="space-y-3">
           <div className="text-sm text-gray-500 mb-4">
-            <p>🔍 We're matching you with another verified UniPi student</p>
+            <p>🔍 We&apos;re matching you with another verified UniPi student</p>
             <p>⏱️ Average wait time is 2-3 minutes</p>
           </div>
 
