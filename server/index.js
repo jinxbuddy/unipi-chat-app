@@ -28,6 +28,15 @@ app.use(helmet());
 app.use(cors(corsOptions));
 app.use(express.json());
 
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({ 
+    status: 'healthy', 
+    timestamp: new Date().toISOString(),
+    service: 'UniPi Chat Backend'
+  });
+});
+
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
