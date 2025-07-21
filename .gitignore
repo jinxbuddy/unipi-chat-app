@@ -61,3 +61,4 @@ temp/
 # User data (for demo)
 users.json
 sessions.json
+.vercel
