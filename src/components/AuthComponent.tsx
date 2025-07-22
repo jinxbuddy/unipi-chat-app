@@ -28,12 +28,16 @@ export default function AuthComponent({ onAuthSuccess }: AuthComponentProps) {
       return
     }
 
+    // FORCE DEMO MODE - Always bypass API calls
+    console.log('🚀 DEMO MODE: Bypassing authentication API')
     setIsLoading(true)
-
-    // FORCE BYPASS - Always skip API for now
-    console.log('FORCED BYPASS: Skipping API call - proceeding to verification step')
-    setStep('verification')
-    setIsLoading(false)
+    
+    // Simulate loading for better UX
+    setTimeout(() => {
+      console.log('✅ Email verification bypassed - proceeding to verification step')
+      setStep('verification')
+      setIsLoading(false)
+    }, 800)
     return
 
     // Original API call (commented out for now)
@@ -87,17 +91,23 @@ export default function AuthComponent({ onAuthSuccess }: AuthComponentProps) {
 
     setIsLoading(true)
 
-    // FORCE BYPASS - Always skip verification for now
-    console.log('FORCED BYPASS: Skipping verification - proceeding to chat')
-    const user: User = {
-      id: Math.random().toString(36).substr(2, 9),
-      email: email,
-      isVerified: true,
-      anonymousName: `Student ${Math.random().toString(36).substr(2, 4).toUpperCase()}`,
-      createdAt: new Date()
-    }
-    onAuthSuccess(user)
-    setIsLoading(false)
+    // FORCE DEMO MODE - Always bypass verification
+    console.log('🚀 DEMO MODE: Bypassing verification API')
+    
+    // Simulate loading for better UX
+    setTimeout(() => {
+      console.log('✅ Verification bypassed - creating demo user and proceeding to chat')
+      const user: User = {
+        id: Math.random().toString(36).substr(2, 9),
+        email: email,
+        isVerified: true,
+        anonymousName: `Student${Math.random().toString(36).substr(2, 4).toUpperCase()}`,
+        createdAt: new Date()
+      }
+      console.log('🎯 Demo user created:', user)
+      onAuthSuccess(user)
+      setIsLoading(false)
+    }, 800)
     return
   }
 
