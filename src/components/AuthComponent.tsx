@@ -30,12 +30,10 @@ export default function AuthComponent({ onAuthSuccess }: AuthComponentProps) {
 
     setIsLoading(true)
 
-    // TEMPORARY: Skip API call for demo purposes
-    console.log('Skipping API call for demo - proceeding to verification step')
-    setTimeout(() => {
-      setStep('verification')
-      setIsLoading(false)
-    }, 1000)
+    // FORCE BYPASS - Always skip API for now
+    console.log('FORCED BYPASS: Skipping API call - proceeding to verification step')
+    setStep('verification')
+    setIsLoading(false)
     return
 
     // Original API call (commented out for now)
@@ -89,19 +87,18 @@ export default function AuthComponent({ onAuthSuccess }: AuthComponentProps) {
 
     setIsLoading(true)
 
-    // TEMPORARY: Skip verification for demo purposes
-    console.log('Skipping verification API call for demo - proceeding to chat')
-    setTimeout(() => {
-      const user: User = {
-        id: Math.random().toString(36).substr(2, 9),
-        email: email,
-        isVerified: true,
-        anonymousName: `Student ${Math.random().toString(36).substr(2, 4).toUpperCase()}`,
-        createdAt: new Date()
-      }
-      onAuthSuccess(user)
-      setIsLoading(false)
-    }, 1000)
+    // FORCE BYPASS - Always skip verification for now
+    console.log('FORCED BYPASS: Skipping verification - proceeding to chat')
+    const user: User = {
+      id: Math.random().toString(36).substr(2, 9),
+      email: email,
+      isVerified: true,
+      anonymousName: `Student ${Math.random().toString(36).substr(2, 4).toUpperCase()}`,
+      createdAt: new Date()
+    }
+    onAuthSuccess(user)
+    setIsLoading(false)
+    return
   }
 
   return (
